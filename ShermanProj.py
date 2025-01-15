@@ -1,6 +1,7 @@
 ##WillThacher2024
 import requests
 import re
+from datetime import datetime 
 from bs4 import BeautifulSoup
 ##Object for storing the data
 class Data:
@@ -18,8 +19,13 @@ tablecontent = soup.find(class_="table table-bordered table-condensed table-stri
 
 ##attempt 3, iterate through each <tr> tag them go to child to find specific "temp 30 ft" then use .next_sibling to get data
 trsort = (tablecontent.find_all("tr"))
+##making txt file
+now = datetime.now()
+datestr = now.strftime("%m-%d-%Y %H:%M:%S")
+print(datestr)
+with open("PastData/"+datestr,"w") as file:
+  file.write("DATA FROM: " + datestr + "\n")
 ##print(trsort)
-
 for x in trsort:
   temptype = x.find("th")
   datatype = temptype.prettify().strip().replace('<th>', '').replace('</th>', '')
@@ -29,27 +35,24 @@ for x in trsort:
   strcurrent = re.sub(" ", "",str(tempdata))#removed spaces
   ##seperate html into lines in a list
   lines = []
-  increment = 0
   chars= ''
   aString = ""
   for chars in strcurrent:
     if chars == '\n':
       lines.append(aString)
-      increment = increment +1
       aString =""
     aString = aString + chars
-                                                              ##for z in lines:
-                                                              ##  print(z)
-                                                              ##  print("________________________________________")
   str24hr = lines.pop(5)
   sign24 = "+"
   ##check caret down or up (default up)
   if "down" in lines.pop(4):
     sign24 = "-"
   str24hr = re.sub("\n","",str24hr)
-  str24hr = "24 hour change \n" + sign24 + str24hr
-  
-  print(datatype + lines.pop(1))
+  str24hr = "24 hour change \n" + sign24 + str24hr + "\n"
+  strcurrent = datatype + lines.pop(1)
+  print(strcurrent)
   print(str24hr)
-  
+  with open("PastData/"+datestr, "a") as file:
+    file.write(strcurrent)
+    file.write(str24hr)
 
