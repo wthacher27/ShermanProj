@@ -12,12 +12,13 @@ class Data:
   def print(obj):
     print(obj.type + ": " + obj.data + ", 24hrchange: " + obj.change)
 
-method1 = requests.get("https://ucce-slo.westernweathergroup.com/dee79adc4bba41508a436140060280e2")
+##URL used to grab
+url = requests.get("https://ucce-slo.westernweathergroup.com/dee79adc4bba41508a436140060280e2")
 ##soup stuff
-soup = BeautifulSoup(method1.content, "html.parser")
+soup = BeautifulSoup(url.content, "html.parser")
 tablecontent = soup.find(class_="table table-bordered table-condensed table-striped table-hover table-header-fixed tabular-report current-conditions-report")
 
-##attempt 3, iterate through each <tr> tag them go to child to find specific "temp 30 ft" then use .next_sibling to get data
+##iterate through each <tr> tag them go to child to find specific "temp 30 ft" then use .next_sibling to get data
 trsort = (tablecontent.find_all("tr"))
 ##making txt file
 now = datetime.now()
@@ -52,6 +53,7 @@ for x in trsort:
   strcurrent = datatype + lines.pop(1)
   print(strcurrent)
   print(str24hr)
+  ##write to file
   with open("PastData/"+datestr, "a") as file:
     file.write(strcurrent)
     file.write(str24hr)
