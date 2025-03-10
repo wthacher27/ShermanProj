@@ -19,7 +19,7 @@ tablecontent = soup.find(
 
 ##iterate through each <th> tag
 thsort = tablecontent.find_all("th")
-
+##cleaning through html code
 counter = 0
 header = []
 for x in thsort:
@@ -37,6 +37,7 @@ for x in thsort:
 
 counter1 = 0
 data = []
+##iterate through each <td> tag
 tdsort = tablecontent.find_all("td")
 for x in tdsort:
     datastr = str(x)
